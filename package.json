@@ -9,5 +9,13 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "type": "module"
 }
