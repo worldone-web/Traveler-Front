@@ -11,7 +11,7 @@ const store = new Store({
 
 export default store;
 
-// 서버에서 레스토랑 정보를 검색하는 함수
+// 음식점 정보를 검색하는 함수
 export const searchRestaurantStores = async (query, page = 1) => {
     try {
         store.state.loading = true;
@@ -29,7 +29,7 @@ export const searchRestaurantStores = async (query, page = 1) => {
         const data = await response.json();
         const { results, next_page_token } = data;
 
-        console.log('/api/places:', JSON.stringify(results, null, 2)); // 디버깅 로그
+        //console.log('/api/places:', JSON.stringify(results, null, 2)); // 디버깅 로그
         
         store.state.restaurants = [
             ...store.state.restaurants,
@@ -47,11 +47,13 @@ export const searchRestaurantStores = async (query, page = 1) => {
     }
 };
 
-export const getRestaurantDetails = async (query, analyzeType = 'exact') => {
+export const getRestaurantDetails = async (placeId) => {
     try {
-        store.state.loading = true; // Optional: Add loading state if needed
-        const response = await fetch(`/api/detail?query=${encodeURIComponent(query)}&analyze_type=${analyzeType}`);
-        
+        store.state.loading = true; 
+
+        // server.js에서 place_id에 해당하는 가게의 상세 정보를 가져옴
+        const response = await fetch(`/api/detail?place_id=${encodeURIComponent(placeId)}`);
+
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
@@ -59,19 +61,26 @@ export const getRestaurantDetails = async (query, analyzeType = 'exact') => {
         const data = await response.json();
 
         console.log('/api/detail:', JSON.stringify(data, null, 2)); // 디버깅 로그
-        
-        // 데이터가 documents 배열이 아닌 경우 직접 객체로 처리
+
+        // 데이터가 유효한 경우 store에 저장
         if (data && typeof data === 'object') {
             store.state.restaurant = {
-                name: data.place_name || 'Unknown Place',
-                address: data.address_name || 'No address provided',
-                road_address: data.road_address_name || 'No address provided',
-                page_url: data.place_url || '#',
-                category: data.category_name || 'No category',
-                phone: data.phone || 'No phone number',
-                photoUrl: data.image_url || 'default-image.jpg',
-                x: data.x,  // 경도
-                y: data.y   // 위도
+                name: data.name || 'Unknown Place',
+                formatted_address: data.adr_address || 'No address provided',
+                phone: data.formatted_phone_number || 'No phone number',
+                website: data.website || '#',
+                rating: data.rating || 'N/A',
+                user_ratings_total: data.user_ratings_total || 'No ratings',
+                geometry: data.geometry || {}, // 위도와 경도를 포함한 위치 정보
+                photos: data.photos || [], // 사진 배열
+
+                opening_hours: data.current_opening_hours || {}, // 영업 시간 정보
+                delivery_available: data.delivery || 'No delivery information', // 배달 여부 (데이터에 포함된 경우)
+                dine: data.dine_in || 'no dine information',
+                place_url: data.url || 'no url information',
+                place_website: data.website || 'no website information',
+
+                icon: data.icon || 'default-image.jpg', // 카테고리 아이콘
             };
         } else {
             console.error('가게 상세 정보를 가져올 수 없습니다.');
@@ -84,6 +93,7 @@ export const getRestaurantDetails = async (query, analyzeType = 'exact') => {
         store.state.loading = false; 
     }
 };
+
 
 export const getWalkingRoute = async (startX, startY, endX, endY) => {
     try {

@@ -23,7 +23,7 @@ export default class StoreItem extends Component {
             return;
         }
 
-        const { name, formatted_address, photos, rating, user_ratings_total } = store;
+        const { name, place_id, photos, rating, user_ratings_total } = store;
 
         // API 키 가져오기
         const apiKey = await this.getApiKey();
@@ -35,11 +35,11 @@ export default class StoreItem extends Component {
 
 
         
-        const query = encodeURIComponent(name); // 가게 이름을 query로 사용
-        const analyzeType = 'exact'; // 정확한 매칭을 원할 경우
+        const id = encodeURIComponent(place_id); // 가게 id를 이용하여 상세정보 검색
+        
   
         // 클릭 시 페이지 이동을 방지하고 SPA 라우팅 사용
-        this.el.setAttribute('href', `#/restaurant?query=${query}&analyze_type=${analyzeType}`);
+        this.el.setAttribute('href', `#/restaurant?id=${id}`);
         this.el.classList.add('restaurant');
         this.el.style.backgroundImage = `url(${photoUrl})`; // 음식점 배경을 첫번 째 사진으로 사용
 
