@@ -8,7 +8,14 @@ export default class StoreItem extends Component {
         });
     }
 
-    render() {
+    async getApiKey() {
+        // 서버에서 API 키를 가져옴
+        const response = await fetch('/api/config');
+        const { apiKey } = await response.json();
+        return apiKey;
+    }
+
+    async render() {
         const { store } = this.props;
 
         if (!store) {
@@ -16,21 +23,37 @@ export default class StoreItem extends Component {
             return;
         }
 
-        const { place_name, address_name, url, photoUrl, id } = store;
+        const { name, formatted_address, photos, rating, user_ratings_total } = store;
 
-        // 쿼리와 analyze_type 파라미터를 설정
-        const query = encodeURIComponent(place_name); // 가게 이름을 query로 사용
+        // API 키 가져오기
+        const apiKey = await this.getApiKey();
+
+        // 첫 번째 사진 가져오기 (사진이 있을 경우)
+        const photoUrl = photos && photos.length > 0
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photos[0].photo_reference}&key=${apiKey}`
+            : 'default-image.jpg'; 
+
+
+        
+        const query = encodeURIComponent(name); // 가게 이름을 query로 사용
         const analyzeType = 'exact'; // 정확한 매칭을 원할 경우
   
         // 클릭 시 페이지 이동을 방지하고 SPA 라우팅 사용
         this.el.setAttribute('href', `#/restaurant?query=${query}&analyze_type=${analyzeType}`);
         this.el.classList.add('restaurant');
-        this.el.style.backgroundImage = `url(${photoUrl || 'default-image.jpg'})`;
+        this.el.style.backgroundImage = `url(${photoUrl})`; // 음식점 배경을 첫번 째 사진으로 사용
+
+        // 평점 데이터
+        const ratingValue = rating ? `${rating} / 5` : '평점 없음';
+
+        // 전체 사용자 리뷰 수 표시
+        const totalRatingsDisplay = user_ratings_total ? `${user_ratings_total}명 리뷰` : '리뷰 없음';
 
         this.el.innerHTML = /*html*/`
             <div class="info">
-                <h3 class="name">${place_name}</h3>
-                <p class="address">${address_name}</p>
+                <h3 class="name">${name}</h3>
+                <p class="rating">평점: ${ratingValue}</p>
+                <p class="total-ratings">${totalRatingsDisplay}</p>
             </div>
         `;
     }
