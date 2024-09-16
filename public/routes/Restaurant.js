@@ -3,9 +3,8 @@ import eatStore, { getRestaurantDetails } from '../store/restaurant.js'; // rest
 
 export default class Restaurant extends Component {
     async render() {
-        // URL의 쿼리 파라미터를 파싱하여 가게 ID를 추출
         const queryParams = new URLSearchParams(location.hash.split('?')[1]);
-        const placeId = queryParams.get('id'); // 가게의 place_id를 가져옴
+        const placeId = queryParams.get('id');
 
         if (!placeId) {
             this.el.innerHTML = '<p>잘못된 요청입니다. 가게 ID가 없습니다.</p>';
@@ -13,19 +12,17 @@ export default class Restaurant extends Component {
         }
 
         try {
-            // getRestaurantDetails 함수로 가게의 상세 정보를 불러옴
             await getRestaurantDetails(placeId);
-            const restaurant = eatStore.state.restaurant; // 가져온 가게 정보를 store에서 불러옴
+            const restaurant = eatStore.state.restaurant;
 
             if (!restaurant) {
                 this.el.innerHTML = '<p>해당 가게 정보를 가져올 수 없습니다.</p>';
                 return;
             }
 
-            // HTML 구성 및 지도 초기화
             this.el.classList.add('container', 'the-restaurant');
             this.el.innerHTML = /* html */ `
-                <div id="map" style="width: 100%; height: 400px;"></div>
+                <div id="map" style="width: 100%; height: 400px;" class="classMap"></div>
                 <div class="specs">
                     <div class="title">
                         ${restaurant.name || 'Unknown Place'}
@@ -39,34 +36,32 @@ export default class Restaurant extends Component {
                         <p>${restaurant.phone || 'No phone number'}</p>
                     </div>
                     <div>
-                        <h3>개장 시간</h3>
+                        <h3>영업 시간</h3>
                         <p>${this.formatOpeningHours(restaurant.opening_hours)}</p>
                     </div>
-                    <div class="special">
+                    <div class="labels">
+                        <h3>서비스 정보</h3>
                         <div>
-                            <h3>음식점 후기</h3>
-                            <p>${restaurant.place_url || 'No delivery information'}</p>
+                            <span>배달 여부 - ${restaurant.delivery_available ? 'O' : 'X'}</span>
+                            &nbsp;/&nbsp;
+                            <span>식사 여부 - ${restaurant.delivery_available ? 'O' : 'X'}</span>     
                         </div>
                         <div>
-                            <h3>음식점 웹 사이트</h3>
-                            <p>${restaurant.place_website || 'No delivery information'}</p>
+                            ${restaurant.place_url ? `<a href="${restaurant.place_url}">음식점 후기</a>` : 'None information'}
                         </div>
                         <div>
-                            <h3>배달 여부</h3>
-                            <p>${restaurant.delivery_available || 'No delivery information'}</p>
+                            ${restaurant.place_website ? `<a href="${restaurant.place_website}">음식점 공식 사이트</a>` : 'None information'}
                         </div>
-                        <div>
-                            <h3>식사 여부</h3>
-                            <p>${restaurant.delivery_available || 'No delivery information'}</p>
-                        </div>
-
-                    <div>
-                    
+                    </div>
+                    <button id="directions-btn">현재 위치에서 경로 찾기</button>
                 </div>
             `;
 
-            // Google Maps API로 지도 초기화
             this.initializeMap(restaurant);
+
+            document.getElementById('directions-btn').addEventListener('click', () => {
+                this.findRouteToRestaurant(restaurant);
+            });
 
         } catch (error) {
             console.error('Error in Restaurant render:', error);
@@ -74,12 +69,10 @@ export default class Restaurant extends Component {
         }
     }
 
-    // Google Maps API로 지도 초기화 및 가게 위치 표시
     async initializeMap(restaurant) {
         const { geometry } = restaurant;
-        const apiKey = await this.getApiKey(); // API 키를 가져옴
+        const apiKey = await this.getApiKey();
 
-        // Google Maps API를 비동기로 로딩
         const loadGoogleMapsApi = () => {
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
@@ -92,14 +85,12 @@ export default class Restaurant extends Component {
             });
         };
 
-        // initMap 함수는 구글 지도 API에서 자동으로 호출
         window.initMap = () => {
             const map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: geometry.location.lat, lng: geometry.location.lng },
                 zoom: 15
             });
 
-            // 마커 추가
             new google.maps.Marker({
                 position: { lat: geometry.location.lat, lng: geometry.location.lng },
                 map: map,
@@ -114,20 +105,61 @@ export default class Restaurant extends Component {
         }
     }
 
-    // 오픈시간과 마감시간 포맷팅 함수
+    async findRouteToRestaurant(restaurant) {
+        const apiKey = await this.getApiKey();
+    
+        // 서울 삼성 본사 좌표 고정
+        const samsungHQCoords = {
+            lat: 37.5133,
+            lng: 127.0589
+        };
+    
+        // 구글 지도 초기화
+        const map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: samsungHQCoords
+        });
+    
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+        
+        console.log('삼성 본사 좌표:', samsungHQCoords);
+        console.log('음식점 좌표:', restaurant.geometry.location);
+
+        // 경로 요청
+        const request = {
+            origin: samsungHQCoords, // 출발지를 서울 삼성 본사로 고정
+            destination: {
+                lat: restaurant.geometry.location.lat,
+                lng: restaurant.geometry.location.lng
+            },
+            
+            //travelMode: google.maps.TravelMode.DRIVING // WALKING, DRIVING은 좌표가 불안정하면 제대로 처리가 안됨.
+            travelMode: google.maps.TravelMode.TRANSIT // 대중교통 경로를 사용
+
+        };
+    
+        directionsService.route(request, (result, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+            } else {
+                console.error('Directions request failed due to ' + status);
+                alert('경로를 찾을 수 없습니다: ' + status);
+            }
+        });
+    }
+    
+
     formatOpeningHours(openingHours) {
         if (!openingHours || !openingHours.weekday_text) {
             return '영업 시간 정보가 없습니다.';
         }
-    
-        // weekday_text 배열을 HTML로 변환
+
         const formattedHours = openingHours.weekday_text.join('<br>');
-    
         return formattedHours;
     }
-    
 
-    // 서버에서 API 키를 가져오는 함수
     async getApiKey() {
         try {
             const response = await fetch('/api/config');

@@ -204,16 +204,16 @@ body {
 }
 
 
-.restaurant{
+.the-restaurant{
     color: var(--colkor-white-50);
     display:flex;
     gap:70px;
 
 }
 
-.the-restaurant #map {
-    flex-shrink: 0;
-    --width: 200px;
+.the-restaurant .map {
+    flex-shrink: 0;  
+    --width: 500px;
     width: var(--width); 
     height: calc(var(--width)*3/2);
     border-radius: 10px;
@@ -246,10 +246,6 @@ body {
 .the-restaurant .labels.skeleton{
     height: 30px;
 }
-.the-restaurant .plot.skeleton{
-    width:80%;
-    height: 400px;
-}
 
 .the-restaurant h3{
     font-size: 20px;
@@ -258,6 +254,12 @@ body {
     margin: 24px 0 6px;
 }
 
+.the-restaurant a{
+    font-family: "Oswald", sans-serif;
+    color: var(--color-white);
+    margin-bottom: 20px;
+    text-decoration: none;
+}
 
 header{
     padding:20px 40px;
