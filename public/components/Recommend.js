@@ -1,5 +1,5 @@
 import { Component } from '../core/heropy.js';
-import eatStore, { recommendRestaurantStores } from '../store/restaurant.js';
+import eatStore2, {recommendRestaurantStores} from '../store/recommend.js';
 
 export default class Recommend extends Component {
     render() {
@@ -13,7 +13,7 @@ export default class Recommend extends Component {
         const btnEl = this.el.querySelector('button');
         btnEl.addEventListener('click', async () => {
             try {
-                await recommendRestaurantStores(eatStore.state.searchText, 1);
+                await recommendRestaurantStores(eatStore2.state.searchText);
             } catch (error) {
                 console.error('추천 중 오류 발생:', error);
             }

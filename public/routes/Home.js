@@ -5,6 +5,11 @@ import StoreList from '../components/StoreList.js'
 import StoreListMore from '../components/StoreListMore.js'
 
 
+//추천 컴포넌트
+import Recommend from "../components/Recommend.js";
+import RecommendList from '../components/RecommendList.js'
+
+
 export default class Home extends Component{
     render(){
         const headline = new Headline().el;
@@ -12,10 +17,16 @@ export default class Home extends Component{
         const storeList = new StoreList().el;   
         const storeListMore = new StoreListMore().el;        
 
+        //추천 요소들
+        const recommend = new Recommend().el;
+        const recommendList = new RecommendList().el;
+
         this.el.classList.add('container')
         this.el.append(
             headline,
             search,
+            recommend,
+            recommendList,
             storeList,
             storeListMore
             

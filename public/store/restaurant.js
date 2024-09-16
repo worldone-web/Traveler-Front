@@ -5,8 +5,6 @@ const store = new Store({
     page: 1,
     restaurants: [],
     restaurant: null, // 특정 가게의 상세 정보를 저장
-    recommends: [],
-    recommend: null, // 특정 추천 가게의 상세정보를 저장
     pageMax: 1,
     loading: false
 });

@@ -66,6 +66,32 @@ app.get('/api/detail', async (req, res) => {
     }
 });
 
+app.get('/api/recommends', async (req, res) => {
+    const query = req.query.query;
+    
+    if (!query) {
+        return res.status(400).json({ error: 'Query parameter is required' });
+    }
+    //console.log(`Query: ${query}, Page: ${page}`); // 디버깅 로그
+
+    try {
+        const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${API_KEY}`);
+        
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        //console.log('Search API Response:', JSON.stringify(data, null, 2)); 
+
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching from Google Places API:', error);
+        res.status(500).json({ error: 'Failed to fetch data' });
+    }
+});
+
+
 // app.use(): Express.js에서 미들웨어를 설정하는 데 사용, 모든 경로와 모든 요청에 대해 미들웨어를 적용
 // express.static(): 특정 디렉토리의 정적 파일들을 제공하기 위해 사용되는 미들웨어, 
 // 이 미들웨어를 통해 CSS, JavaScript, 이미지 파일 등의 정적 자원을 쉽게 제공
