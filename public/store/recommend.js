@@ -1,7 +1,7 @@
 import { Store } from '../core/heropy.js';
 
 const store2 = new Store({
-    searchText: '',
+    searchText: '치킨',
     page: 1,
     recommends: [],
     recommend: null, // 특정 가게의 상세 정보를 저장
@@ -14,6 +14,9 @@ export default store2;
 export const recommendRestaurantStores = async (query) => {
     try {
         store2.state.loading = true;
+        if (!query) {
+            throw new Error('검색어가 비어 있습니다.');
+        }
         store2.state.recommends = [];
 
         const response = await fetch(`/api/recommends?query=${encodeURIComponent(query)}`); // 각 음식점들의 이름들 반환

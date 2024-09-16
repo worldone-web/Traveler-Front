@@ -14,11 +14,11 @@ export default class TheHeader extends Component {
                     },
                     {
                         name:'Restaurant',
-                        href: `#/restaurant?query=${
-                            eatStore.state.restaurant && eatStore.state.restaurant.place_name 
-                                ? eatStore.state.restaurant.place_name 
-                                : '국밥'
-                        }&analyze_type=exact`
+                        href: `#/restaurant?id=${
+                            eatStore.state.restaurant && eatStore.state.restaurant.place_id 
+                                ? eatStore.state.restaurant.place_id 
+                                : ''
+                        }`
             
                     },
                     {
