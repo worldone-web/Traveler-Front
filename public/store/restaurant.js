@@ -4,7 +4,9 @@ const store = new Store({
     searchText: '',
     page: 1,
     restaurants: [],
-    restaurant: null, // 특정 가게의 상세 정보를 저장하기 위한 필드
+    restaurant: null, // 특정 가게의 상세 정보를 저장
+    recommends: [],
+    recommend: null, // 특정 추천 가게의 상세정보를 저장
     pageMax: 1,
     loading: false
 });
@@ -95,21 +97,32 @@ export const getRestaurantDetails = async (placeId) => {
 };
 
 
-export const getWalkingRoute = async (startX, startY, endX, endY) => {
+export const recommendRestaurantStores = async (query, page = 1) => {
     try {
-        const response = await fetch(`/api/route?startX=${startX}&startY=${startY}&endX=${endX}&endY=${endY}`);
+        store.state.loading = true;
+        store.state.recommends = [];
+
+        const response = await fetch(`/api/recommends?query=${encodeURIComponent(query)}`);
         
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
         const data = await response.json();
+        const { results } = data;
 
-        //console.log('/api/route:', JSON.stringify(data, null, 2)); // 디버깅 로그
-        return data;
+        //console.log('/api/recommends:', JSON.stringify(results, null, 2)); // 디버깅 로그
+        
+        store.state.recommends = [
+            ...store.state.recommends,
+            ...results
+        ];
+
+
     } catch (error) {
         console.error('데이터를 가져오는 중 오류 발생:', error);
-        throw error;
+        store.state.recommends = [];
+    } finally {
+        store.state.loading = false;
     }
 };
-
