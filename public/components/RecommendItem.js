@@ -40,7 +40,7 @@ export default class RecommendItem extends Component {
   
         // 클릭 시 페이지 이동을 방지하고 SPA 라우팅 사용
         this.el.setAttribute('href', `#/restaurant?id=${id}`);
-        this.el.classList.add('restaurant');
+        this.el.classList.add('recommend');
         this.el.style.backgroundImage = `url(${photoUrl})`; // 음식점 배경을 첫번 째 사진으로 사용
 
         // 평점 데이터
