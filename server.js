@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url); // 파일 경로 반환
 const __dirname = path.dirname(__filename); //현재 파일이 속한 디렉토리의 절대 경로 반환
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const API_KEY = process.env.GOOGLE_API_KEY || null;
 
 // API 키를 클라이언트에 전달하는 엔드포인트
@@ -68,28 +68,36 @@ app.get('/api/detail', async (req, res) => {
 
 app.get('/api/recommends', async (req, res) => {
     const query = req.query.query;
-    
+
     if (!query) {
         return res.status(400).json({ error: 'Query parameter is required' });
     }
-    //console.log(`Query: ${query}, Page: ${page}`); // 디버깅 로그
 
     try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${API_KEY}`);
-        
+        const response = await fetch(`http://127.0.0.1:5000/recommend/${encodeURIComponent(query)}`);
+
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
         const data = await response.json();
-        //console.log('Search API Response:', JSON.stringify(data, null, 2)); 
+        console.log('Recommend API Response:', JSON.stringify(data, null, 2)); 
 
-        res.json(data);
+        // Check if the data structure is valid
+        if (data && data.restaurants && Array.isArray(data.restaurants.list)) {
+            // Send the valid data response
+            res.json(data);
+        } else {
+            // Handle invalid data structure
+            console.error('Invalid data structure:', data);
+            res.status(500).json({ error: 'Invalid data structure from recommendation API' });
+        }
     } catch (error) {
         console.error('Error fetching from Google Places API:', error);
         res.status(500).json({ error: 'Failed to fetch data' });
     }
 });
+
 
 
 // app.use(): Express.js에서 미들웨어를 설정하는 데 사용, 모든 경로와 모든 요청에 대해 미들웨어를 적용

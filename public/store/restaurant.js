@@ -27,6 +27,7 @@ export const searchRestaurantStores = async (query, page = 1) => {
         }
 
         const data = await response.json();
+        console.log('/api/places:', JSON.stringify(data, null, 2)); // 디버깅 로그
         const { results, next_page_token } = data;
 
         //console.log('/api/places:', JSON.stringify(results, null, 2)); // 디버깅 로그
@@ -60,7 +61,7 @@ export const getRestaurantDetails = async (placeId) => {
 
         const data = await response.json();
 
-        console.log('/api/detail:', JSON.stringify(data, null, 2)); // 디버깅 로그
+        //console.log('/api/detail:', JSON.stringify(data, null, 2)); // 디버깅 로그
 
         // 데이터가 유효한 경우 store에 저장
         if (data && typeof data === 'object') {
@@ -91,36 +92,5 @@ export const getRestaurantDetails = async (placeId) => {
         store.state.restaurant = null;
     } finally {
         store.state.loading = false; 
-    }
-};
-
-
-export const recommendRestaurantStores = async (query, page = 1) => {
-    try {
-        store.state.loading = true;
-        store.state.recommends = [];
-
-        const response = await fetch(`/api/recommends?query=${encodeURIComponent(query)}`);
-        
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const { results } = data;
-
-        //console.log('/api/recommends:', JSON.stringify(results, null, 2)); // 디버깅 로그
-        
-        store.state.recommends = [
-            ...store.state.recommends,
-            ...results
-        ];
-
-
-    } catch (error) {
-        console.error('데이터를 가져오는 중 오류 발생:', error);
-        store.state.recommends = [];
-    } finally {
-        store.state.loading = false;
     }
 };

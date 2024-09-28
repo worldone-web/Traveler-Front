@@ -109,27 +109,27 @@ export default class Restaurant extends Component {
         const apiKey = await this.getApiKey();
     
         // 서울 삼성 본사 좌표 고정
-        const samsungHQCoords = {
-            lat: 37.5133,
-            lng: 127.0589
+        const PHCityHallHQCoords = {
+            lat: 39.9526,
+            lng: -75.1652
         };
     
         // 구글 지도 초기화
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
-            center: samsungHQCoords
+            center: PHCityHallHQCoords
         });
     
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer();
         directionsRenderer.setMap(map);
         
-        console.log('삼성 본사 좌표:', samsungHQCoords);
+        console.log('삼성 본사 좌표:', PHCityHallHQCoords);
         console.log('음식점 좌표:', restaurant.geometry.location);
 
         // 경로 요청
         const request = {
-            origin: samsungHQCoords, // 출발지를 서울 삼성 본사로 고정
+            origin: PHCityHallHQCoords, // 출발지를 서울 삼성 본사로 고정
             destination: {
                 lat: restaurant.geometry.location.lat,
                 lng: restaurant.geometry.location.lng
