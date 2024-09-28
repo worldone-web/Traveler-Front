@@ -27,7 +27,7 @@ export default class RecommendList extends Component {
         eatStore2.state.recommends.forEach(recommend => {
             //음식점 상세 페이지를 출력하는 자식 컴포넌트 StoreItem
             const recommedItem = new RecommendItem({ 
-                store: recommend
+                store: recommend.details
             }).el;
             recommendEl.append(recommedItem);
         });

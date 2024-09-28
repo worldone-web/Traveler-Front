@@ -81,7 +81,7 @@ app.get('/api/recommends', async (req, res) => {
         }
 
         const data = await response.json();
-        console.log('Recommend API Response:', JSON.stringify(data, null, 2)); 
+        //console.log('Recommend API Response:', JSON.stringify(data, null, 2)); 
 
         // Check if the data structure is valid
         if (data && data.restaurants && Array.isArray(data.restaurants.list)) {
@@ -97,6 +97,40 @@ app.get('/api/recommends', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch data' });
     }
 });
+
+app.get('/api/exactPlaces', async (req, res) => {
+    const { name, latitude, longitude, radius = 20 } = req.query; // 기본 반경을 1000미터로 설정
+
+    // query, latitude, longitude가 없을 경우 에러 반환
+    if (!name || !latitude || !longitude) {
+        return res.status(400).json({ error: 'Name, latitude, and longitude parameters are required' });
+    }
+
+    try {
+        
+
+        // Google Places Nearby Search API 호출
+        const searchResponse = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&keyword=${encodeURIComponent(name)}&key=${API_KEY}`);
+
+        // API 응답 상태 확인
+        if (!searchResponse.ok) {
+            throw new Error(`Network response was not ok: ${searchResponse.statusText}`);
+        }
+
+        const searchData = await searchResponse.json();
+
+        // 결과 반환
+        res.json({ restaurants: searchData.results });
+
+    } catch (error) {
+        console.error('Error fetching from Google Places API:', error);
+        res.status(500).json({ error: 'Failed to fetch data from Google Places API' });
+    }
+});
+
+
+
+
 
 
 
