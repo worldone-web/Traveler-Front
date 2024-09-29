@@ -99,7 +99,7 @@ app.get('/api/recommends', async (req, res) => {
 });
 
 app.get('/api/exactPlaces', async (req, res) => {
-    const { name, latitude, longitude, radius = 20 } = req.query; // 기본 반경을 1000미터로 설정
+    const { name, latitude, longitude, radius = 500 } = req.query; // 기본 반경을 1000미터로 설정
 
     // query, latitude, longitude가 없을 경우 에러 반환
     if (!name || !latitude || !longitude) {
