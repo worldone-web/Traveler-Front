@@ -1,7 +1,7 @@
 import { Store } from '../core/heropy.js';
 
 const store2 = new Store({
-    userId: 1,
+    userId: 2,
     page: 1,
     recommends: [],
     recommend: null, // 특정 가게의 상세 정보를 저장

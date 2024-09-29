@@ -84,6 +84,11 @@ body {
     color:var(--colkor-white-30);
 }
 
+.headline button{
+    float: right; /* 버튼을 오른쪽으로 이동 */
+    font-size: 50px; /* 글자 크기 크게 설정 */
+}
+
 .search{
     display: flex;
     gap:10px;
