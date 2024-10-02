@@ -1,7 +1,7 @@
 import { Store } from '../core/heropy.js';
 
 const store = new Store({
-    searchText: '',
+    searchText: ' ',
     page: 1,
     restaurants: [],
     restaurant: null, // 특정 가게의 상세 정보를 저장
@@ -15,6 +15,7 @@ export default store;
 export const searchRestaurantStores = async (query, page = 1) => {
     try {
         store.state.loading = true;
+        store.state.searchText=query;
         store.state.page = page;
         if (page === 1) {
             store.state.restaurants = [];

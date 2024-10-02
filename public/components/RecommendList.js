@@ -5,6 +5,10 @@ import RecommendItem from './RecommendItem.js';
 export default class RecommendList extends Component {
     constructor() {
         super();
+        this.render();  // el 속성을 설정하기 위해 render() 호출
+        this.state = {
+            isVisible: false // 처음에는 제목을 숨김
+        };
         eatStore2.subscribe('recommends', () => {
             this.render();
         });
@@ -12,10 +16,13 @@ export default class RecommendList extends Component {
             this.render();
         });
     }
-
+    
     render() {
         this.el.classList.add('recommend-list');
         this.el.innerHTML = /*html*/`
+            <h2 class="today-recommendation" style="display: ${this.state.isVisible ? 'block' : 'none'};">
+                User${eatStore2.state.userId}님의 추천 현황
+            </h2> 
             <div class="recommends"></div>
             <div class="the-loader hide"></div>
         `;

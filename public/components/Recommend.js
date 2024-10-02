@@ -2,6 +2,7 @@ import { Component } from '../core/heropy.js';
 import eatStore2, {recommendRestaurantStores} from '../store/recommend.js';
 
 export default class Recommend extends Component {
+  
     render() {
         this.el.classList.add('recommend');
         this.el.innerHTML = /*html*/`

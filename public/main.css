@@ -123,6 +123,23 @@ body {
     background-color: var(--color-area);
 }
 
+
+.restaurant-list .today-search{
+    
+    top: 0; /* 화면 상단으로 위치 */
+    left: 0;
+    width: 100%; /* 전체 너비 */
+    background-color: var(--color-hover);
+    color: var(--color-area); 
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-size: 24px; /* 폰트 크기 크게 */
+    font-weight: bold; /* 폰트 굵게 */
+    padding: 15px 0; /* 위아래 여백 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 살짝 그림자 효과 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+}
+
+
 .restaurant .message{
     color:var(--color-primary);
     font-size:20px;
@@ -185,6 +202,21 @@ body {
     padding:20px;
     border-radius: 4px;
     background-color: var(--color-area);
+}
+
+.recommend-list .today-recommendation{
+    
+    top: 0; /* 화면 상단으로 위치 */
+    left: 0;
+    width: 100%; /* 전체 너비 */
+    background-color: var(--color-hover);
+    color: var(--color-area); 
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-size: 24px; /* 폰트 크기 크게 */
+    font-weight: bold; /* 폰트 굵게 */
+    padding: 15px 0; /* 위아래 여백 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 살짝 그림자 효과 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
 }
 
 .recommend-list .recommends{

@@ -5,17 +5,24 @@ import StoreItem from './StoreItem.js';
 export default class StoreList extends Component {
     constructor() {
         super();
+        this.state = {
+            isVisible: false // 처음에는 제목을 숨김
+        };
         eatStore.subscribe('restaurants', () => {
             this.render();
         });
         eatStore.subscribe('loading', () => {
             this.render();
         });
+       
     }
 
     render() {
         this.el.classList.add('restaurant-list');
         this.el.innerHTML = /*html*/`
+            <h2 class="today-search" style="display: ${this.state.isVisible ? 'block' : 'none'};">
+                ${eatStore.state.searchText} 검색결과
+            </h2> 
             <div class="restaurants"></div>
             <div class="the-loader hide"></div>
         `;
