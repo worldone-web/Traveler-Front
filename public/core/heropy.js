@@ -14,8 +14,14 @@ export class Component {
     render() { // 컴포넌트를 렌더링하는 함수
       // ...
     }
+    setState(newState) {
+      this.state = { ...this.state, ...newState };
+      this.render(); // 상태 업데이트 후 자동으로 다시 렌더링
+    }
     
   }
+
+  
   
   
   ///// Router /////

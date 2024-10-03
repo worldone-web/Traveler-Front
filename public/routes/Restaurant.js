@@ -6,6 +6,9 @@ export default class Restaurant extends Component {
         const queryParams = new URLSearchParams(location.hash.split('?')[1]);
         const placeId = queryParams.get('id');
 
+        eatStore.state.storePlaceId=placeId;
+        console.log(eatStore.state.storePlaceId)
+
         if (!placeId) {
             this.el.innerHTML = '<p>잘못된 요청입니다. 가게 ID가 없습니다.</p>';
             return;

@@ -9,6 +9,7 @@ export default class StoreList extends Component {
             isVisible: false // 처음에는 제목을 숨김
         };
         eatStore.subscribe('restaurants', () => {
+            
             this.render();
         });
         eatStore.subscribe('loading', () => {

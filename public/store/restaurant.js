@@ -6,7 +6,8 @@ const store = new Store({
     restaurants: [],
     restaurant: null, // 특정 가게의 상세 정보를 저장
     pageMax: 1,
-    loading: false
+    loading: false,
+    storePlaceId: ''
 });
 
 export default store;

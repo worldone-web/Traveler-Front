@@ -33,7 +33,7 @@ export default class Search extends Component {
                     } else {
                         console.error('today-search 없음');
                     }
-                    this.recommendList.render(); // 추천 내용을 업데이트하기 위해 render 호출
+                    //this.storeList.render(); // 추천 내용을 업데이트하기 위해 render 호출
                 } catch (error) {
                     console.error('검색 중 오류 발생:', error);
                 }
@@ -53,7 +53,7 @@ export default class Search extends Component {
                     } else {
                         console.error('today-search 없음');
                     }
-                    this.recommendList.render(); // 추천 내용을 업데이트하기 위해 render 호출
+                    //this.storeList.render(); // 추천 내용을 업데이트하기 위해 render 호출
                 } catch (error) {
                     console.error('검색 중 오류 발생:', error);
                 }

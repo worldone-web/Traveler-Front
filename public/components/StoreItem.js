@@ -1,4 +1,5 @@
 import { Component } from '../core/heropy.js';
+import eatStore from '../store/restaurant.js';
 
 export default class StoreItem extends Component {
     constructor(props) {
@@ -36,6 +37,7 @@ export default class StoreItem extends Component {
 
         
         const id = encodeURIComponent(place_id); // 가게 id를 이용하여 상세정보 검색
+        
         
   
         // 클릭 시 페이지 이동을 방지하고 SPA 라우팅 사용
