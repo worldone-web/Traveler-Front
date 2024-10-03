@@ -21,7 +21,7 @@ export default class RecommendList extends Component {
         this.el.classList.add('recommend-list');
         this.el.innerHTML = /*html*/`
             <h2 class="today-recommendation" style="display: ${this.state.isVisible ? 'block' : 'none'};">
-                User${eatStore2.state.userId}님의 추천 현황
+                User${eatStore2.state.userId}의 추천 현황
             </h2> 
             <div class="recommends"></div>
             <div class="the-loader hide"></div>

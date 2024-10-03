@@ -7,7 +7,7 @@ import RecommendList from '../components/RecommendList.js'
 
 
 export default class Home extends Component{
-
+    
 
     render(){
         
