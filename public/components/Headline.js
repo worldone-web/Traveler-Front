@@ -14,14 +14,14 @@ export default class Headline extends Component {
         this.el.innerHTML= /*html*/`
             <h1>
                 <span>Traveler 4</span><br>
-                Busan 
+                Restaurant
                 <button class='btn btn-primary'>Today Recommend!</button><br>
                 reommendation POI
                 
             </h1>
             <p>
-                The website recommends personalized POI locations 
-                to tourists to promote tourism in Busan.
+                The website provides users with the convenience of 
+                finding restaurants through personalized recommendations.
             </p>
             <div id='map'></div>
         `   

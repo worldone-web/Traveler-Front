@@ -26,6 +26,9 @@ export default class Restaurant extends Component {
             this.el.classList.add('container', 'the-restaurant');
             this.el.innerHTML = /* html */ `
                 <div id="map" style="width: 100%; height: 400px;" class="classMap"></div>
+                <div id="directions-panel">
+                    <!-- 세부 경로가 여기에 표시됩니다 -->
+                </div>
                 <div class="specs">
                     <div class="title">
                         ${restaurant.name || 'Unknown Place'}
@@ -110,48 +113,89 @@ export default class Restaurant extends Component {
 
     async findRouteToRestaurant(restaurant) {
         const apiKey = await this.getApiKey();
-    
-        // 서울 삼성 본사 좌표 고정
+        
+        // 필라데핑아 시청 좌표 고정
         const PHCityHallHQCoords = {
             lat: 39.9526,
             lng: -75.1652
         };
-    
+        
         // 구글 지도 초기화
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
             center: PHCityHallHQCoords
         });
-    
+        
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer();
         directionsRenderer.setMap(map);
         
-        console.log('삼성 본사 좌표:', PHCityHallHQCoords);
+        console.log('필라데피아 시청 좌표:', PHCityHallHQCoords);
         console.log('음식점 좌표:', restaurant.geometry.location);
-
+    
         // 경로 요청
         const request = {
-            origin: PHCityHallHQCoords, // 출발지를 서울 삼성 본사로 고정
+            origin: PHCityHallHQCoords, // 출발지 고정
             destination: {
                 lat: restaurant.geometry.location.lat,
                 lng: restaurant.geometry.location.lng
             },
-            
-            //travelMode: google.maps.TravelMode.DRIVING // WALKING, DRIVING은 좌표가 불안정하면 제대로 처리가 안됨.
-            travelMode: google.maps.TravelMode.TRANSIT // 대중교통 경로를 사용
-
+            travelMode: google.maps.TravelMode.TRANSIT // 대중교통 경로
         };
-    
+        
         directionsService.route(request, (result, status) => {
             if (status === 'OK') {
                 directionsRenderer.setDirections(result);
+    
+                // 세부 경로를 화면에 출력
+                this.displayRouteDetails(result.routes[0].legs[0].steps);
+    
             } else {
                 console.error('Directions request failed due to ' + status);
                 alert('경로를 찾을 수 없습니다: ' + status);
             }
         });
     }
+    
+    displayRouteDetails(steps) {
+        const directionsPanel = document.getElementById('directions-panel');
+        directionsPanel.innerHTML = ''; // 이전 내용 삭제
+    
+        steps.forEach((step, index) => {
+            const stepElement = document.createElement('div');
+            
+            // 아이콘 선택
+            let icon;
+            switch (step.travel_mode) {
+                case 'WALKING':
+                    icon = '<i class="fas fa-walking"></i>';
+                    break;
+                case 'TRANSIT':
+                    icon = '<i class="fas fa-bus"></i>';
+                    break;
+                case 'DRIVING':
+                    icon = '<i class="fas fa-car"></i>';
+                    break;
+                default:
+                    icon = '<i class="fas fa-question"></i>';
+                    break;
+            }
+    
+            // 세부 경로에 아이콘과 정보를 추가
+            stepElement.innerHTML = `
+                <div class="step-item">
+                    <div class="step-icon">${icon}</div>
+                    <div class="step-details">
+                        <h4>Step ${index + 1}</h4>
+                        <p>${step.instructions}</p>
+                        <p><strong>거리:</strong> ${step.distance.text}, <strong>시간:</strong> ${step.duration.text}</p>
+                    </div>
+                </div>
+            `;
+            directionsPanel.appendChild(stepElement);
+        });
+    }
+    
     
 
     formatOpeningHours(openingHours) {
