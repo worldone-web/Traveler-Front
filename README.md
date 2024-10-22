@@ -8,9 +8,9 @@
 ![Search](https://github.com/user-attachments/assets/4204e509-0a06-44b2-9959-049bfe3c55de)
 
 #음식점 상세정보
-![new_findRoute](https://github.com/user-attachments/assets/92b02682-dcc1-4474-8418-9c1b1a291d36)
+![new_detail](https://github.com/user-attachments/assets/ec0a907d-c0e2-422d-8d3b-2a803c798903)
 
 #음식점 길찾기
-![new_detail](https://github.com/user-attachments/assets/ec0a907d-c0e2-422d-8d3b-2a803c798903)
+![new_findRoute](https://github.com/user-attachments/assets/92b02682-dcc1-4474-8418-9c1b1a291d36)
 
 
