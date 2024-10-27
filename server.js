@@ -74,7 +74,7 @@ app.get('/api/recommends', async (req, res) => {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:5000/recommend/${encodeURIComponent(query)}`);
+        const response = await fetch(`http://recommender:5000/recommend/${encodeURIComponent(query)}`);
 
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
