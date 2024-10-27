@@ -143,7 +143,7 @@ export default class Restaurant extends Component {
             travelMode: google.maps.TravelMode.TRANSIT // 대중교통 경로
         };
           
-        
+
         directionsService.route(request, (result, status) => {
             if (status === 'OK') {
                 directionsRenderer.setDirections(result);
@@ -157,6 +157,7 @@ export default class Restaurant extends Component {
             }
         });
     }
+    
     
     displayRouteDetails(steps) {
         const directionsPanel = document.getElementById('directions-panel');
@@ -181,7 +182,7 @@ export default class Restaurant extends Component {
                     icon = '<i class="fas fa-question"></i>';
                     break;
             }
-    
+           
             // 세부 경로에 아이콘과 정보를 추가
             stepElement.innerHTML = `
                 <div class="step-item">

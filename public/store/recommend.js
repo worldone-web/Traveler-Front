@@ -46,6 +46,7 @@ export const recommendRestaurantStores = async (query) => {
                         throw new Error(`Error fetching details for ${name}: ${exactResponse.statusText}`);
                     }
 
+                    
                     const restaurantDetails = await exactResponse.json();
                     //console.log(restaurantDetails)
 

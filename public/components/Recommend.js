@@ -17,6 +17,8 @@ export default class Recommend extends Component {
             eatStore2.state.userId = inputEl.value;
         });
        
+
+        
         const btnEl = this.el.querySelector('button');
         btnEl.addEventListener('click', async () => {
             try {

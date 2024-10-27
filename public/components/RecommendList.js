@@ -27,6 +27,7 @@ export default class RecommendList extends Component {
             <div class="the-loader hide"></div>
         `;
 
+
         const recommendEl = this.el.querySelector('.recommends');
         recommendEl.innerHTML = ''; 
 

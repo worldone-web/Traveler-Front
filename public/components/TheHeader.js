@@ -58,6 +58,7 @@ export default class TheHeader extends Component {
                         const hrefHash = href.split('?')[0];
                         const hash = location.hash.split('?')[0];
                         const isActive = hrefHash === hash;
+                        
                         return /*html */`
                             <li>
                                 <a 

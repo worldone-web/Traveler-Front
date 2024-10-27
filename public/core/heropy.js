@@ -19,6 +19,7 @@ export class Component {
       this.render(); // 상태 업데이트 후 자동으로 다시 렌더링
     }
     
+    
   }
 
   

@@ -22,6 +22,7 @@ export default class StoreList extends Component {
        
     }
 
+    
     render() {
         this.el.classList.add('restaurant-list');
         this.el.innerHTML = /*html*/`

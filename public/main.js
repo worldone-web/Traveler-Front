@@ -6,6 +6,7 @@ import router from './routes/index.js';
 const root = document.querySelector("#root");
 root.append(new App().el);
 
+
 // 라우터 설정
 router();
 

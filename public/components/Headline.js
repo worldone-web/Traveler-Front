@@ -25,7 +25,6 @@ export default class Headline extends Component {
             </p>
             <div id='map'></div>
         `   
-
         const btnEl = this.el.querySelector('button');
         btnEl.addEventListener('click', async () => {
             try {

@@ -7,6 +7,7 @@ export default class Search extends Component {
         this.storeList = storeListInstance;  // 기존 RecommendList 인스턴스 사용
     }
 
+    
     render() {
         this.el.classList.add('search');
         this.el.innerHTML = /*html*/`

@@ -15,6 +15,7 @@ export default class RecommendItem extends Component {
         return apiKey;
     }
 
+    
     async render() {
         const { store } = this.props;
 

@@ -35,7 +35,8 @@ export default class StoreItem extends Component {
             : 'default-image.jpg'; 
 
 
-        
+       
+            
         const id = encodeURIComponent(place_id); // 가게 id를 이용하여 상세정보 검색
         
         

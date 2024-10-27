@@ -93,6 +93,7 @@ export const getRestaurantDetails = async (placeId) => {
         console.error('데이터를 가져오는 중 오류 발생:', error);
         store.state.restaurant = null;
     } finally {
+        
         store.state.loading = false; 
     }
 };
