@@ -68,6 +68,7 @@ export default class TheHeader extends Component {
                             </li>
                         `;
                     }).join('')} 
+                    
                 </ul>    
             </nav>
         `;

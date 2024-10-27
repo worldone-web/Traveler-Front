@@ -142,6 +142,7 @@ export default class Restaurant extends Component {
             },
             travelMode: google.maps.TravelMode.TRANSIT // 대중교통 경로
         };
+          
         
         directionsService.route(request, (result, status) => {
             if (status === 'OK') {
