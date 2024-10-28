@@ -158,7 +158,6 @@ export default class Restaurant extends Component {
         });
     }
     
-    
     displayRouteDetails(steps) {
         const directionsPanel = document.getElementById('directions-panel');
         directionsPanel.innerHTML = ''; // 이전 내용 삭제
