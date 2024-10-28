@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
+
 const __filename = fileURLToPath(import.meta.url); // 파일 경로 반환
 const __dirname = path.dirname(__filename); //현재 파일이 속한 디렉토리의 절대 경로 반환
 
